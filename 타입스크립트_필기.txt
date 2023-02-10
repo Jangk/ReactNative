@@ -1,0 +1,100 @@
+타입스크립트 설정.
+    - HTML은 js만 인식가능하기 때문에 스크립트는 무조건 js를 써야함.
+    - .ts 파일에서 터미널로 tsc -w를 하면 컴파일해서 .js로 변환해줌.(새파일 생성)
+    - 확장프로그램으로 prettier를 깔고 prettierrc.js 파일을 생성해 설정을 하면 저장할때마다 설정의 형식에 따라
+      스크립트 형식을 변환함 (ex) 따옴표는 작은 따옴표로 세미콜론은 생략)
+
+
+변수
+    변수명:자료형                                               // 변수를 c처럼 특정 자료형을 지정함.
+    - number, array, string, boolean, Array                       ex) let num1:number
+      null, undefined, object                                         * num1의 변수를 숫자형으로 지정함.
+                                                                        다른형태의 자료형이 들어오면 에러발생.
+
+    변수명:자료형[]                                             // 배열의 자료형만 받음.
+    변수명:Array<자료형>                                        // 위와 동일.
+* 튜플 (Tuple)
+    변수명:[자료형1, 자료형2];                                  // 2개의 자료형을 하나로 하기위한 형태(사전형?)
+    enum 이넘명{이넘변수1,이넘변수,};                           // c++ enum과 동일
+                                                                  * 이넘 변수에 숫자값을 맵핑하면 다음 이넘 변수에
+                                                                    넣은 숫자값의 다음값으로 맵핑됌
+                                                                  * string값을 맵핑하면 다음 변수에 적용되지않음
+                                                                ex) enum os{
+                                                                    Window,
+                                                                    Ios,
+                                                                    Android
+                                                                    }
+                                                                    os['Ios']           // 이런식으로 사용가능
+                                                                    os.Window           // 윗줄과 동일
+                                                                    let myOs:os;        // 선언
+
+
+함수
+    function 함수명():void{};                                   // 리턴값을 void로 함.
+    function 함수명():never{};                                  // 항상 에러를 반환하거나, 무한 루프에 사용
+                                                                   * 에러를 제외하고 리턴값을 보내지않을려고 사용
+오버로딩
+ * c++ 처럼 정의를 계속 할 필요없이 선언만 하고 정의에 모든 기능을 넣어도됨.
+      ex) function join(age: number): number                    // 숫자일때 오버로딩
+          function join(age: string): string                    // 문자열일때 오버로딩
+          function join(age: string | number): number | string { // 오버로딩 될 수 있는 값을 정의 ?
+            if (typeof age === 'number') {
+              return age
+            } else return '다시입력해'
+          }
+                                                                
+
+인터페이스
+    - 타입스크립트에서 오브젝트는 속성 값에 대한 정보가 없기때문에 그냥 사용하면 에러발생
+      ex) let user:object;
+          user ={
+            name : "이름"
+          }
+          console.log(user.name);                               // 이부분에서 name을 참조할 수 없다.
+
+    interface 객체명{                                           // 인터페이스를 통해 정의를 하면 속성값을 참조가능
+        속성명:자료형;                                              * 타입스크립트에선 속성을 마음대로 추가할 수 없음
+        속성명:자료형;                                              * 인터페이스끼리 상속이 가능하다.
+    }
+
+    * 옵셔널
+    속성명?:자료형;                                             // 인터페이스 내에 속성명 뒤에 ?를 붙이면                                                       
+        ex) interface 객체명{                                      옵셔널이 됨.
+            속성명:자료형;                                          * 값을 넣어도 되고 안넣어도 되고 선택할수잇는값
+            속성명?:자료형;                                         * 함수 인자에도 사용가능
+            }                                                                                  
+
+    readonly 속성명                                            // 값을 변경할 수 없고 읽기만 가능하게함.
+        ex) interface 객체명{                                     * 생성할떄만 값을 설정가능.
+            속성명:자료형;
+            readonly 속성명:자료형;  
+            }             
+
+    [속성명:자료형1] : 자료형2;                                 // 자료형1에 해당하는 키값을 가지고, 자료형2의
+                                                                  값을 가지는 속성 변수를 여러개 받을 수 있음.
+        ex) interface student{      
+            name:string;
+            [grade:number] : string;
+        } 
+        let user : student ={
+            name : "철수",
+            1 : 'A',                                           // 키와 밸류를 여러개 입력가능.
+            2 : 'B',
+            3 : 'C'
+        }
+
+    type 타입명 ='값';                                          // 문자열 리터널 타입
+        ex) type Score = 'A'|'B'|'C';                          // a 또는 b 또는 C인 타입
+                                                                  * 위의 예시 [grade:number] : string;에서
+                                                                    string 대신 사용하면 A,B,C만 사용가능.
+
+    interface 함수명{(함수인자):자료형}                         // 인터페이스로 함수 선언
+        ex) interface Add{                                    // 자료형 형태 타입(인터페이스)만 정의함
+                (num1:number, num2:number): number;
+            }
+            const addFunc : Add = function(x,y){              // 인퍼페이스 함수 기능 정의
+                return x+y;
+            }
+
+    class 클래스명 implements 인터페이스명{};                   // 인터페이스 형태의 클래스를 만들땐 implements를
+                                                                 써야함.
