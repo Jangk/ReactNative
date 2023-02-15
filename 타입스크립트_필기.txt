@@ -96,5 +96,92 @@
                 return x+y;
             }
 
+
+리터널 타입
+    - 변수에 넣는 변하지 않는 데이터
+      ex) const userName = "a";                               // "a"는 리터널 타입.
+                                                                 
+
+유니온 타입 (|)
+    - 둘중 하나의 값을 사용할때 씀.   
+      ex) type Job = "police"| "developer" |"teacher";        // 3가지 값중 하나를 가지는 타입을 선언
+
+
+교차 타입 (&)
+    - 두가지의 데이터를 모두 사용할때 씀
+      ex) const toyCar:toy & car ={};                         // toycar는 toy와 car의 인터페이스를 모두 써야함.
+
+
+Class
+    - 타입스크립트에서 class는 접근 제한자(public, private, protected)를 사용할 수 있다.
+      * 접근 제한자를 사용하지않으면 public, 속성 앞에 #을 적으면 private와 동일.
+    - 클래스는 상속이 한개만 가능하지만, 인터페이스는 여러개 가능.
+    - static으로 씌여진 멤버 변수나 메서드는 this.변수명이 아니라 클래스명.변수명으로 쓴다.
+
     class 클래스명 implements 인터페이스명{};                   // 인터페이스 형태의 클래스를 만들땐 implements를
                                                                  써야함.
+    abstract class 클래스명                                    // 추상 클래스 
+                                                                 * new 통해 생성하기 불가능하고 상속을 통해서만
+                                                                  사용가능 (c++과 동일)
+    abstract 함수명(){};                                       // 추상함수는 자식에서 정의하지않으면 안됨.
+
+
+Generics
+    function 함수명<T>(함수인자):리턴자료형{}                    // c++ 템플릿과 동일한 기능.
+                                                                  * 함수가 아니여도 클래스, 인터페이스에서 사용가능
+    ex) function getSize<T>(arr:T[]):number{                   // 제너릭의 T는 꼭 T가아니여도 됨.
+        return arr.lenght;
+      }
+      let arr = [1,2,3];
+      getSize<number>(arr1);                                   // getSize의 제너릭은 전부 number로 취급된다.
+
+    fuction 함수명<T extends {확장할변수명:자료형}>(함수인자:T):리턴자료형{}
+      - T에 들어올 데이터에 확장할 변수명이 없으면 추가함 
+      ex) fuction showName<T extends{name:string}>(data:T):string{    // data에 name이라는 속성이 없으면 추가.
+          return data.name;                                     // data에 name이 없으면 추가, 있으면 기존꺼사용
+        }                                                          * name은 string이여야 한다.
+
+
+유틸리티 타입.
+    keyof 객체명;                                                // 객체명의 키값을 유니온 타입으로 받음.
+      ex) interface User{                                        // 인터페이스 선언.
+            id:number,
+            name:string,
+            age:number,
+          }
+          type UserKey = keyof User;                              // Userkey = "id" | "name" | "age";와 동일
+
+    let 객체명:partial<생성할객체>={};                              // 생성할 객체의 멤버 변수를 옵셔널로 바꿔줌.
+      ex) let admin: prtial<User> = {                             // 위의 예제에 있는 User를 partial 함
+            id : 1,
+            name : "aaa"                                          // 인터페이스에 있는 멤버 변수를 전부 정의해야
+          }                                                          하지만 partial이면 옵셔널이 되서 정의 안해됨.
+                                                                      * 기존의 없던 것을 추가도 안됨.
+
+    let 객체명:Required<생성할객체>={};                             // partial과 반대로 옵셔널을 필수 멤버변수로 
+                                                                      정의해야되게 바꿈.
+    let 변수명:Record<키, 값>={};                                   // 키와 값형태의 자료형으로 만듬 ?
+      ex) type Grade = "1" | "2" | "3";
+          type Score = "A" | "B" | "C";
+          const scoreBoard = Record<Grade, Score> ={
+            1:"A",
+            2:"B",
+            3:"C",
+          };
+
+    let 객체명: Pick<객체, 키>={};                                    // 객체 내에 키에 해당하는 값만 추출해서 사용
+      ex) const admin : Pick<User, "id"|"name">={                    // 위에 정의된 User 인터페이스에서 id 와
+            id: 0,                                                       name을 사용함.
+            name: "aaa"
+          }
+
+    let 객체명: Omit<객체, 키>={};                                    // Pick의 반대로 키에 해당하는 값만 제외하고
+                                                                        사용.
+
+    Exclude<객체, 제외할자료형>                                       // 객체에서 사용 입력값을 제외시킴.
+      ex) type t1 = string | number | boolean;                      // t1에 3가지 자료형만 입력 가능하게 설정.
+          type t2 = Exclude<t1, number | boolean>;                  // t1에 2개를 사용 불가능하게 설정.
+
+    NonNullable<Type>                                               // 타입에 NULL, undefined를 사용못하게함
+      ex) type t1 = string | number | boolean | NULL | undefined;    
+          type t2 = NonNullable<t1>;                                // NULL과 undefined를 못쓰게함.
