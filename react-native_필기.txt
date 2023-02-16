@@ -1,0 +1,114 @@
+리엑트 네이티브 
+    DOM
+      * 객체가 부모/자식 형태의 나무구조를 DOM TREE 구조라고 하고 줄여서 DOM 구조라고 함.
+      * 리액트 프레임 워크는 물리 DOM과 가상 DOM이 있음.
+        - 물리 DOM : 웹 브라우저에서 자바스크립트 코드가 생성하는 실제 DOM 구조
+        - 가상 DOM : 리액트 코드가 생성한 자바스크립트 객체 DOM 구조라고
+      * 리액트 네이티브에서 생성하는 것은 가상 DOM이므로 물리 DOM으로 넘겨주는것을 렌더링이라고 함.
+
+    마크업 언어
+      * <div></div> 처럼 <로 시작하고 >끝나며 /로 끝남과 시작을 구분하고 속성값은 ""로 감싸야함.
+        ex) <div id="root" style ="display:flex"><h1>Hello World</h1></div>
+            * <div>안에 있는 <h1>같은 경우는 자식으로 설정됨.
+    
+    JSX
+     - javascript와 XML 구문을 결합해서 사용.
+       * jsx 구문이 있는 코드파일은 확장자가 tsx여야하고, jsx구문이 있으면 import React from 'react';를
+         무조건 포함해야 한다.
+
+     - jsx 안에 자바스크립트를 쓰려면 {}안에 써야함.
+       * {}안에 들어가는 코드는 표현식만 사용가능. 실행문은 불가능(ex) if,for,switch,case)
+         - 표현식은 return 이없으며, 값만 남는경우
+      ex) <Text>
+            { 자바스크립트 코드 }
+          </Text>
+
+     - jsx 안에 스크립트에서 if문을 쓰고 싶으면 단축 평가 형태로 써야함.
+       ex) const isLoading = true;
+           {isLoading && <Text> Loading...<Text>}                
+           {!isLoading && <Text> Play ! <Text>}                  
+
+     - jsx문은 React.crateElement 호출이라 JSX 구문자체를 변수에 담을 수 있다. return 값으로도 사용가능
+       ex) const virtualDOM = <SafeAreaView><Text>Hellow World</Text></SafeAreaView>
+       ex2) return {value}
+
+     - jsx문을 배열 변수로 리턴할 때는 자식 컴포넌트 형식으로 보내야만 된다.
+       ex) const children = [
+            <Text> Hello World </Text>,
+            <Text> Hello World </Text>,
+            <Text> Hello World </Text>
+            ]
+            return <SafeAreaView>{children}</SafeAreaView>                  // 배열을 SafeAreaView 자식으로 반환
+
+
+기본 구조
+    - import React from 'react';                                           // React 라는 객체를 'react'에서 가져옴
+    - import { 컴포넌트 } from 'react-native';                              // 리엑트 네이티브에서 Text를 가져옴.
+       * 컴포넌트를 쓸려면 가져와야댐.
+         ex) SafeAreaView를 쓰려면 import { SafeAreaView } from 'react-native';
+
+    - export default function App(){ return 반환활 가상DOM객체}// 말그대도 가상DOM 객체를 반환
+
+
+기본 함수
+    React.crateElement(컴포넌트 or 문자열, 속성 객체, 자식 컴포넌트)          // 가상 DOM객체를 생성하고 리턴함
+        ex) export default function App() {
+              const textElement = React.createElement(
+                Text, null, 'Hello world!');                               // TEXT 가상 DOM생성
+              return textElement;}                                         // 가상 DOM을 넘겨줌
+
+    <SafeAreaView>내용</SafeAreaView>                                       // 안전공간을 제외한 공간에 내용
+    ex) export default function App(){
+        <SafeAreaView>
+            <Text> 출력할 내용</Text>
+        </SafeAreaView>   
+        }
+
+    JSON.stringify(변환할 것, 변환할 타입, 공간)                              // 변환할 값을 변환할 타입으로
+                                                                               입력된 공간만큼 벌린만큼 JSON형식
+                                                                               으로 출력
+                                                                                * 변환할 타입이 null이거 없으면
+                                                                                  string으로 설정됨.
+
+사용자 컴포넌트
+    - 리액트 네이티브는 사용자가 컴포넌트를 생성가능하다.
+      * 컴포넌트가 리엑트에 포함된 내용이기때문에 import React, {Component} from 'react'를 해야함.
+      * 컴포넌트를 만드는 목적이 화면에 렌더링하는 것이기때문에 클래스 컴포넌트가 render라는 이름의 메서드를
+        가져야함.
+        ex) export default class myClassComponent extends Component{        // 컴포넌트가 들어있는 파일을 불러왔을때
+              render(){                                                        지정하지않으면 default를 호출
+                return return React.createElement(Text, null, 'dd')         // render의 리턴 값은 ReactNode
+              }                                                             // <Text></Text>같은 마크업도 가능
+            }                                                                  * 확장자가 Jsx일때만 가능.
+
+
+
+터미널 
+    npx react-native init 생성할 프로젝트명
+     - 프로젝트명에 해당하는 리액트 네이티브 플러그인이 설치함(프로젝트 생성)
+
+    npm start
+     - 해당 위치에서 리액트 네이티브를 실행.
+    
+    npm run Android
+     - 설치된 안드로이드 에뮬레이터 실행. (ios는 윈도우에서 못함)
+
+    
+    // 페이커 라이브러리 자체가 없어짐
+    npm install faker@5.5.3
+    npm install @types/faker@5.5.3
+    npm i faker
+     - 테스트용 가짜 리소스가 들어있는 faker 패키지 설치
+    // 현재 faker 라이브러리 제작자가 라이브러리 테러해서 작동안함 ? (꽁짜로 쓰는거 맘에 안든다고 )
+
+    npm i -D @types/faker
+     - faker는 자바스크립트 패키지라서 타입스크립트에서 사용하기위한 라이브러리 설치.
+
+    mkdir 폴더명
+     - 현재위치에서 폴더명의 하위 폴더 생성.
+
+     tocuh 경로\파일명.확장자
+      - 파일명.확장자를 경로에 생성 (경로가없으면 해당 위치에서 생성)
+
+
+    
