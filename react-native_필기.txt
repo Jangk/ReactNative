@@ -77,7 +77,63 @@
         </SafeAreaView>   
         }
 
-    <ScrollView>내용</ScrollView>                                           // 내용이 스크롤 가능.
+    <ScrollView>내용</ScrollView>                                           // 내용이 스크롤 가능.\
+
+
+이벤트 처리 (전부 해당하는 것들을 import 해야됨)
+    - Button
+    <Button title="타이틀명" color="색상" opPress ={콜백함수}>               // 버튼 눌릴시 콜백함수 호출
+                                                                               * color는 생략가능
+
+    - Alert
+    Alert.alert('버튼 머릿말 ?', '내용')                                   // 알림 머릿말 밑에 내용이 팝업으로뜸
+
+    - TouchableOpacity                                                    // 터치시 투명해짐 
+    - TouchableHighlight                                                  // 터치시 깜빡임 ?
+        ex) const onPress = () => Alert.alert('Haed', 'Body')             // onPress라는 알림 함수 
+            <TouchableOpacity onPress={onPress}>                          // 터치시 onPress 함수 실행
+            <Text>Opacity</Text>                                          // 텍스트 (클릭가능 영역)
+            </TouchableOpacity>                                           // 하이라이트랑 오퍼시티랑 사용법 동일
+
+    - TextInput
+      1. defaultValue 값을 설정가능.
+      2. 입력된 텍스트 value 속상값으로 반환가능
+      3. 텍스트가 입력될 때 onChangeText 이벤트 처리기를 실행
+      4. placeholder 속성을 사용해 어떤 값을 설정해야 하는지 문자열로 출력할 수 있다.
+      5. editable 속성값에 false를 설정하면 입력을 못하게 할 수 있다.
+      6. KeyboardType 속성에 'default' 'numeric', 'email-address'등의 값을 설정할 수 있다.
+      7. 포커스를 가지게 하는 focus 메서드와 포커스를 잃게 하는 blur 메서드가 있다.
+      8. 텍스트를 입력할 수 있는 상태(포커스를 가진 상태)가 되면 onBlur 이벤트 호출
+      9. 텍스트 입력이 모두 끝나면 onEndEditing 이벤트를 호출한다.
+      10. 자식 요소를 가지지 못함.
+          ex) <TextInput
+                placeholder   = "기본 입력 값"                              // 처음 실행시 입력되 있는 값
+                onChangeText  = {(text:string)=>console.log(text)}         // 글자가 변경 됬을때 호출
+                onFocus       = {() => console.log('onFocus')}             // 글자 입력창이 활성화 되있을때 호출
+                onBlur        = {() => console.log('onBlur')}              // 포커스 상태가 아닐 때
+                onEndEditing  = {() => console.log('onEndEditing')}        // 글자 입력 끝나면 호출
+              />
+
+
+스타일 속성과 StyleSheet API
+    - HTML 객체와 달리 React-Native는 문자열이 아니라 객체임.
+      ex) <SafeAreaView style = {{flex :1, backgroundColor: 'blue'}}>
+
+    - style 객체는 배열로 사용시 배열 내에 있는 스타일 객체를 모두 결합해서 하나의 스타일로 변환
+      ex) <컴포넌트이름 style ={{스타일객체1,스타일객체2...}}/>
+
+    - view 컴포넌트는 바탕색을 Text는 글자색을 변경가능.
+      ex) <SafeAreaView style ={[{backgroundColor: 'blue'}]}>              // 뷰 컴포넌트 백그라운드 색변경
+            <Text style = {[{color: 'white'}]}></Text>                     // 텍스트 글자 색변경
+          </SafeAreaView>
+
+    - StyleSheet를 이용해 관리 가능.
+    StyleSheet.create({키:스타일객체, 키:스타일객체})                         // 자바스크립트로 만든걸 모듈로
+                                                                               넘겨주는 개념이라 이런 형식임.
+    ex) const styles = StyleSheet.create({
+          SafeAreaView : {flex: 1, alignItems: 'center', justifyContent: 'center'},
+          text: {fontsize: 20}
+        })
 
 
 사용자 컴포넌트
