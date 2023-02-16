@@ -1,3 +1,5 @@
 export * from './MyFunction'
 export * from './MyModule'
 export * from './MyClassComponent'
+export * from './MyArrowComponent'
+export * from './MyFunctionComponent'

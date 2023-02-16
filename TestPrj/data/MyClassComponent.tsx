@@ -1,11 +1,12 @@
+// 클래스 컴포넌트. Compenent를 상속(확장)해야만 사용가능.
+// render를 구현해야하며, JSX 구문또는 ReactNode를 반환해야함.
 import React, { Component } from 'react'
 import { Text } from 'react-native'
 import * as M from '../data'
 
 const testModule = M.CreateMyModule()
 
-// Render의 리턴값으로 JSX 넣으면 에러뜸
-// 왜 그런지 이유 찾아볼것
+
 export default class myClassComponent extends Component {
   render() {
     console.log('Class Component Called')
@@ -13,7 +14,3 @@ export default class myClassComponent extends Component {
   }
 }
 
-export const myArrowComponent = () => {
-  console.log('Arrow Component Called')
-  return null
-}

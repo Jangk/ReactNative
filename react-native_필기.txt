@@ -16,6 +16,11 @@
        * jsx 구문이 있는 코드파일은 확장자가 tsx여야하고, jsx구문이 있으면 import React from 'react';를
          무조건 포함해야 한다.
 
+     - 속성 값을 넣을땐 문자열은 "", 나머지는 {}를 사용
+       ex) <Person name = "Jack">
+           <Person age = {30}>
+           <Person objPerson = {{name:"jack", age:30}}                  // 객체의 경우 안쪽 괄호는 객체
+                                                                        // 바깥 괄호는 jsx 구문임.
      - jsx 안에 자바스크립트를 쓰려면 {}안에 써야함.
        * {}안에 들어가는 코드는 표현식만 사용가능. 실행문은 불가능(ex) if,for,switch,case)
          - 표현식은 return 이없으며, 값만 남는경우
@@ -57,6 +62,14 @@
                 Text, null, 'Hello world!');                               // TEXT 가상 DOM생성
               return textElement;}                                         // 가상 DOM을 넘겨줌
 
+    JSON.stringify(변환할 것, 변환할 타입, 공간)                              // 변환할 값을 변환할 타입으로
+                                                                               입력된 공간만큼 벌린만큼 JSON형식
+                                                                               으로 출력
+                                                                                * 변환할 타입이 null이거 없으면
+                                                                                  string으로 설정됨.
+                                                                                  
+    <Text>내용</Text>                                                       // 문자 출력
+    
     <SafeAreaView>내용</SafeAreaView>                                       // 안전공간을 제외한 공간에 내용
     ex) export default function App(){
         <SafeAreaView>
@@ -64,14 +77,11 @@
         </SafeAreaView>   
         }
 
-    JSON.stringify(변환할 것, 변환할 타입, 공간)                              // 변환할 값을 변환할 타입으로
-                                                                               입력된 공간만큼 벌린만큼 JSON형식
-                                                                               으로 출력
-                                                                                * 변환할 타입이 null이거 없으면
-                                                                                  string으로 설정됨.
+    <ScrollView>내용</ScrollView>                                           // 내용이 스크롤 가능.
+
 
 사용자 컴포넌트
-    - 리액트 네이티브는 사용자가 컴포넌트를 생성가능하다.
+    - 클래스 컴포넌트
       * 컴포넌트가 리엑트에 포함된 내용이기때문에 import React, {Component} from 'react'를 해야함.
       * 컴포넌트를 만드는 목적이 화면에 렌더링하는 것이기때문에 클래스 컴포넌트가 render라는 이름의 메서드를
         가져야함.
@@ -80,6 +90,31 @@
                 return return React.createElement(Text, null, 'dd')         // render의 리턴 값은 ReactNode
               }                                                             // <Text></Text>같은 마크업도 가능
             }                                                                  * 확장자가 Jsx일때만 가능.
+     - 화살표 컴포넌트(기본 함수)
+       * 컴포넌트를 포함 하지않아도 됨.
+       * 일반 함수를 컴포넌트화 시켰음.
+         ex) const myArrowComponent = () => {                               // 일반 함수 정의
+             console.log('Arrow Component Called')
+             return null
+             }
+             export default myArrowComponent;                               // 정의 한 함수를 배출?(export)
+
+     - 함수 컴포넌트
+       * 리액트에서 컴포넌트를 import해야된다.
+       * FunctionComponent로 FC로 재정의되서 FC로 사용.
+         ex) import type{FC} form 'react'                                   // FunctionComponent를 재정의된 FC
+             import * as M from '../data'                                   // data 폴더안의 것들은 M으로 선언
+             export type myData = {                                         // 타입 정의
+               myMod: M.myModule
+             }
+             const myModule: FC<myData> = (value) => {                      // 정의한 타입 함수 컴포넌트 선언
+               const { myMod } = value;
+               return <Text>{JSON.stringify(myMod, null, 2)}</Text>
+             }
+             export default myModule;
+
+            -------------------App.tsx----------------------------------
+             <MyFunctionComponent myMod={module} />                         // 메인 app에서 myMod에 접근하기
 
 
 
