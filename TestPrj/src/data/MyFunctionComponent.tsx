@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text } from 'react-native'
 import type { FC } from 'react' // import { FunctionComponent } from 'react'와 동일. FunctionComponent의 재정의가 FC기 때문
-import * as M from '../data'
+import * as M from '.'
 
 export type myData = {
   myMod: M.myModule
