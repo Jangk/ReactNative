@@ -46,176 +46,6 @@
             return <SafeAreaView>{children}</SafeAreaView>                  // 배열을 SafeAreaView 자식으로 반환
 
 
-기본 구조
-    - import React from 'react';                                           // React 라는 객체를 'react'에서 가져옴
-    - import { 컴포넌트 } from 'react-native';                              // 리엑트 네이티브에서 Text를 가져옴.
-       * 컴포넌트를 쓸려면 가져와야댐.
-         ex) SafeAreaView를 쓰려면 import { SafeAreaView } from 'react-native';
-
-    - export default function App(){ return 반환활 가상DOM객체}// 말그대도 가상DOM 객체를 반환
-
-
-기본 함수
-    React.crateElement(컴포넌트 or 문자열, 속성 객체, 자식 컴포넌트)          // 가상 DOM객체를 생성하고 리턴함
-        ex) export default function App() {
-              const textElement = React.createElement(
-                Text, null, 'Hello world!');                               // TEXT 가상 DOM생성
-              return textElement;}                                         // 가상 DOM을 넘겨줌
-
-    JSON.stringify(변환할 것, 변환할 타입, 공간)                              // 변환할 값을 변환할 타입으로
-                                                                               입력된 공간만큼 벌린만큼 JSON형식
-                                                                               으로 출력
-                                                                                * 변환할 타입이 null이거 없으면
-                                                                                  string으로 설정됨.
-                                                                                  
-    <Text>내용</Text>                                                       // 문자 출력
-    
-    <SafeAreaView>내용</SafeAreaView>                                       // 안전공간을 제외한 공간에 내용
-    ex) export default function App(){
-        <SafeAreaView>
-            <Text> 출력할 내용</Text>
-        </SafeAreaView>   
-        }
-
-    <ScrollView>내용</ScrollView>                                           // 내용이 스크롤 가능.
-
-    Platform.OS                                                             // 현재 구동된 기기가 안드로이드/아이폰
-
-    Platform.select(ios:적용할값, android:적용할값)                          // 운영체별로 다른값을 전달함
-                                                                               
-    Dimensions.get('window')                                                // window의 가로 세로를 얻음 
-                                                                               return {width, height}
-
-
-이벤트 처리 (전부 해당하는 것들을 import 해야됨)
-    - Button
-    <Button title="타이틀명" color="색상" opPress ={콜백함수}>               // 버튼 눌릴시 콜백함수 호출
-                                                                               * color는 생략가능
-
-    - Alert
-    Alert.alert('버튼 머릿말 ?', '내용')                                   // 알림 머릿말 밑에 내용이 팝업으로뜸
-
-    - TouchableOpacity                                                    // 터치시 투명해짐 
-    - TouchableHighlight                                                  // 터치시 깜빡임 ?
-        ex) const onPress = () => Alert.alert('Haed', 'Body')             // onPress라는 알림 함수 
-            <TouchableOpacity onPress={onPress}>                          // 터치시 onPress 함수 실행
-            <Text>Opacity</Text>                                          // 텍스트 (클릭가능 영역)
-            </TouchableOpacity>                                           // 하이라이트랑 오퍼시티랑 사용법 동일
-
-    - TextInput
-      1. defaultValue 값을 설정가능.
-      2. 입력된 텍스트 value 속상값으로 반환가능
-      3. 텍스트가 입력될 때 onChangeText 이벤트 처리기를 실행
-      4. placeholder 속성을 사용해 어떤 값을 설정해야 하는지 문자열로 출력할 수 있다.
-      5. editable 속성값에 false를 설정하면 입력을 못하게 할 수 있다.
-      6. KeyboardType 속성에 'default' 'numeric', 'email-address'등의 값을 설정할 수 있다.
-      7. 포커스를 가지게 하는 focus 메서드와 포커스를 잃게 하는 blur 메서드가 있다.
-      8. 텍스트를 입력할 수 있는 상태(포커스를 가진 상태)가 되면 onBlur 이벤트 호출
-      9. 텍스트 입력이 모두 끝나면 onEndEditing 이벤트를 호출한다.
-      10. 자식 요소를 가지지 못함.
-          ex) <TextInput
-                placeholder   = "기본 입력 값"                              // 처음 실행시 입력되 있는 값
-                onChangeText  = {(text:string)=>console.log(text)}         // 글자가 변경 됬을때 호출
-                onFocus       = {() => console.log('onFocus')}             // 글자 입력창이 활성화 되있을때 호출
-                onBlur        = {() => console.log('onBlur')}              // 포커스 상태가 아닐 때
-                onEndEditing  = {() => console.log('onEndEditing')}        // 글자 입력 끝나면 호출
-              />
-
-
-스타일 속성과 StyleSheet API
-    - HTML 객체와 달리 React-Native는 문자열이 아니라 객체임.
-      ex) <SafeAreaView style = {{flex :1, backgroundColor: 'blue'}}>
-
-    - style 객체는 배열로 사용시 배열 내에 있는 스타일 객체를 모두 결합해서 하나의 스타일로 변환
-      ex) <컴포넌트이름 style ={{스타일객체1,스타일객체2...}}/>
-
-    - view 컴포넌트는 바탕색을 Text는 글자색을 변경가능.
-      ex) <SafeAreaView style ={[{backgroundColor: 'blue'}]}>              // 뷰 컴포넌트 백그라운드 색변경
-            <Text style = {[{color: 'white'}]}></Text>                     // 텍스트 글자 색변경
-          </SafeAreaView>
-
-    - StyleSheet를 이용해 관리 가능.
-    StyleSheet.create({키:스타일객체, 키:스타일객체})                         // 자바스크립트로 만든걸 모듈로
-                                                                               넘겨주는 개념이라 이런 형식임.
-    ex) const styles = StyleSheet.create({
-          SafeAreaView : {flex: 1, alignItems: 'center', justifyContent: 'center'},
-          text: {fontsize: 20}
-        })
-
-    MD2Colors / MD3Color
-      - 색상을 자세히 표현하기 위해 사용 (기존 Colors가 MD2Colors되고 MD3Colors가 추가됨)
-        * react-native-vector-iocons와 react-native-paper 터미널로 2개를 설치하고 써야함.
-        * MD3Color는 에러색상 ?같은 알림 류 색상 모음인덧
-          ex) const styles = StyleSheet.create({
-                    SafeAreaView: { backgroundColor: MD2Colors.blue500 },
-                                    text: { fontSize: 20, color: MD2Colors.blue200}
-    width, height
-      - 색상 표현 범위 지정가능
-        * 고정수치 입력, 퍼센테이지 입력, flex속성을 이용해 부모의 일부만 사용 등 가능
-          ex) SafeAreaView: { backgroundColor: MD2Colors.blue500, width: 300, height: 300 }
-                                                                  width: '70%'
-                                                                  flex: 1
-    flex와 height의 차이
-      - flex는 남는 부분의 100%를 의미하고 height는 화면크기의 100%를 의미함.
-        * flex는 부모의 영역을 나눠가짐?
-          ex) a가 flex 0. b가 flex 1, c가 flex2일때,
-              a는 자기가 사용하는 영역만 가지고,
-              b는 3분의1 (b / a+b+c) 영역을 가짐
-              c는 3분의2 (c / a+b+c) 영역을 가짐
-
-    margin
-     - 부모와 자식, 이웃 형제 요소간의 간격을 조정함 (고정수치 입력, 퍼센테이지 입력)
-       * marginLeft, marginTop, marginRight, marginBottom, margin으로 기준을 정함 ?
-          ex) SafeAreaView: { backgroundColor: MD2Colors.blue500, flex: 1, margin: '10%'}
-               가로, 세로가 10%줄음 ?
-
-    padding
-      - 부모와 자식, 이웃 형제 요소간의 공간을 확보 ?
-        * paddingLeft, paddingTop, paddingRight, paddingBottom, padding
-        * paddingLeft == paddingRight 일떄 paddingVertical로 설정
-        * 수평이 동일할땐 paddingHorizontal
-
-    border
-      - 경계 표시
-        * borderWidth == borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth로 넓이 설정
-        * borderColor == borderLeftColor, borderRightColor, borderTopColor, borderBottomColor로 색상 설정
-        * borderRadius== borderLeftTopRadius, borderTopRightRadius, 
-                         borderBottomLeftRadius, borderBottomRightRadius 로 모서리 둥근 정도 설정가능
-        * borderStyle == 'solid', 'dotted', 'dashed'   실선 점선
-
-    Image
-      - Image는 ImageBackground와 달리  자식을 가질수 없음.
-      - 앱의 자원이 아니라 다른 원격지 서버에서 파일을 렌더링할 땐 source에 {uri:이미지 파일 웹주소}형태의 객체를씀
-
-    ImageBackground 
-      - 이미지를 배경으로 사용
-        ex) <ImageBackground style ={{flex:1}} source={require(./src/asset/images/test.png')}/>
-
-    Font
-      - 폰트를 쓰려면 react-native.config.js 파일을 생성하고 모듈 설정을해야함.
-        ex) module.export = {
-              project:{                                                     // 필수로 들어가야함.
-                ios:{},
-                android{},
-              },
-              assets:['./src/assets/fonts'],                                // 폰트가 있는 폴더 
-            }   
-      - 터미널에서 npx react-native link를 터미널을 멈추고 작동시켜야 폰트가 적용됨.(0.6부터는 안해도됨)
-      - 0.6버전 이상부터는 npx react-navive-asset 하면됨.
-
-    fontFamily (fontFamily: '파일확장자 없는 폰트파일 이름')
-      - 폰트 스타일 속성.
-        ex) fontFamily: 'defaultFont'                                       // defaultFont.ttf
-
-      - fontWeight: 'normal' 또는 'bold' 또는 '100'                          // 기본, 굵게, 고정 수치
-                                                                               * bold시 기본 글자가 될수도.
-      - textAlign: 'left' 또는 'center' 또는 'right'                         // 왼쪽, 가운데, 오른쪽 정렬\
-    
-    ICON
-      - <Icon name ='아이콘이름' size{아이콘 크기} color='아이콘색상' onPress={콜백함수}/>
-    
-
-
 사용자 컴포넌트
     - 클래스 컴포넌트
       * 컴포넌트가 리엑트에 포함된 내용이기때문에 import React, {Component} from 'react'를 해야함.
@@ -251,6 +81,354 @@
 
             -------------------App.tsx----------------------------------
              <MyFunctionComponent myMod={module} />                         // 메인 app에서 myMod에 접근하기
+
+      - 컴포넌트 재사용
+        * 컴포넌트를 재사용함 ?
+          ex) -----------------------recyleContent.tsx------------------
+              export type RecycleContent = {children?: ReactNode}
+              export const MyContent: FC<RecycleContent> = ({ children }) => {
+                  return (
+                      <View>
+                          <Icon name='commet' size={50} onPress={() => { }} />
+                          <Text>{children}</Text>
+                      </View>
+                  )
+              }
+              -------------------------app.tsx---------------------------
+              <RecycleContnet> 재사용 컴포넌트 </RecycleContnet>
+              <RecycleContent style = {styles.text}>스타일적용</RecycleContent>
+
+
+기본 구조
+    - import React from 'react';                                           // React 라는 객체를 'react'에서 가져옴
+    - import { 컴포넌트 } from 'react-native';                              // 리엑트 네이티브에서 Text를 가져옴.
+       * 컴포넌트를 쓸려면 가져와야댐.
+         ex) SafeAreaView를 쓰려면 import { SafeAreaView } from 'react-native';
+
+    - export default function App(){ return 반환활 가상DOM객체}// 말그대도 가상DOM 객체를 반환
+
+
+    React.crateElement(컴포넌트 or 문자열, 속성 객체, 자식 컴포넌트)          // 가상 DOM객체를 생성하고 리턴함
+        ex) export default function App() {
+              const textElement = React.createElement(
+                Text, null, 'Hello world!');                               // TEXT 가상 DOM생성
+              return textElement;}                                         // 가상 DOM을 넘겨줌
+
+    JSON.stringify(변환할 것, 변환할 타입, 공간)                              // 변환할 값을 변환할 타입으로
+                                                                               입력된 공간만큼 벌린만큼 JSON형식
+                                                                               으로 출력
+                                                                                * 변환할 타입이 null이거 없으면
+                                                                                  string으로 설정됨.
+                                                                                  
+    <Text>내용</Text>                                                       // 문자 출력
+    
+    <SafeAreaView>내용</SafeAreaView>                                       // 안전공간을 제외한 공간에 내용
+    ex) export default function App(){
+        <SafeAreaView>
+            <Text> 출력할 내용</Text>
+        </SafeAreaView>   
+        }
+
+    <ScrollView>내용</ScrollView>                                           // 내용이 스크롤 가능.
+
+    Platform.OS                                                             // 현재 구동된 기기가 안드로이드/아이폰
+
+    Platform.select(ios:적용할값, android:적용할값)                          // 운영체별로 다른값을 전달함
+                                                                               
+    Dimensions.get('window')                                                // window의 가로 세로를 얻음 
+                                                                               return {width, height}
+
+    <Button title="타이틀명" color="색상" opPress ={콜백함수}>               // 버튼 눌릴시 콜백함수 호출
+                                                                               * color는 생략가능
+
+    Alert.alert('버튼 머릿말 ?', '내용')                                   // 알림 머릿말 밑에 내용이 팝업으로뜸
+
+    TouchableOpacity                                                      // 터치시 투명해짐 
+    TouchableHighlight                                                    // 터치시 깜빡임 ?
+      ex) const onPress = () => Alert.alert('Haed', 'Body')               // onPress라는 알림 함수 
+          <TouchableOpacity onPress={onPress}>                            // 터치시 onPress 함수 실행
+          <Text>Opacity</Text>                                            // 텍스트 (클릭가능 영역)
+          </TouchableOpacity>                                             // 하이라이트랑 오퍼시티랑 사용법 동일
+
+    TextInput
+    1. defaultValue 값을 설정가능.
+    2. 입력된 텍스트 value 속상값으로 반환가능
+    3. 텍스트가 입력될 때 onChangeText 이벤트 처리기를 실행
+    4. placeholder 속성을 사용해 어떤 값을 설정해야 하는지 문자열로 출력할 수 있다.
+    5. editable 속성값에 false를 설정하면 입력을 못하게 할 수 있다.
+    6. KeyboardType 속성에 'default' 'numeric', 'email-address'등의 값을 설정할 수 있다.
+    7. 포커스를 가지게 하는 focus 메서드와 포커스를 잃게 하는 blur 메서드가 있다.
+    8. 텍스트를 입력할 수 있는 상태(포커스를 가진 상태)가 되면 onBlur 이벤트 호출
+    9. 텍스트 입력이 모두 끝나면 onEndEditing 이벤트를 호출한다.
+    10. 자식 요소를 가지지 못함.
+        ex) <TextInput
+              placeholder   = "기본 입력 값"                              // 처음 실행시 입력되 있는 값
+              onChangeText  = {(text:string)=>console.log(text)}         // 글자가 변경 됬을때 호출
+              onFocus       = {() => console.log('onFocus')}             // 글자 입력창이 활성화 되있을때 호출
+              onBlur        = {() => console.log('onBlur')}              // 포커스 상태가 아닐 때
+              onEndEditing  = {() => console.log('onEndEditing')}        // 글자 입력 끝나면 호출
+            />
+
+
+
+
+스타일 속성과 StyleSheet API
+    - HTML 객체와 달리 React-Native는 문자열이 아니라 객체임.
+      ex) <SafeAreaView style = {{flex :1, backgroundColor: 'blue'}}>
+
+    - style 객체는 배열로 사용시 배열 내에 있는 스타일 객체를 모두 결합해서 하나의 스타일로 변환
+      ex) <컴포넌트이름 style ={{스타일객체1,스타일객체2...}}/>
+
+    - view 컴포넌트는 바탕색을 Text는 글자색을 변경가능.
+      ex) <SafeAreaView style ={[{backgroundColor: 'blue'}]}>              // 뷰 컴포넌트 백그라운드 색변경
+            <Text style = {[{color: 'white'}]}></Text>                     // 텍스트 글자 색변경
+          </SafeAreaView>
+
+    - StyleSheet를 이용해 관리 가능.
+    StyleSheet.create({키:스타일객체, 키:스타일객체})                         // 자바스크립트로 만든걸 모듈로
+                                                                               넘겨주는 개념이라 이런 형식임.
+    ex) const styles = StyleSheet.create({
+          SafeAreaView : {flex: 1, alignItems: 'center', justifyContent: 'center'},
+          text: {fontsize: 20}
+        })
+
+    <Text numberOfLines = {줄수}>텍스트</Text>                              // 렌더링 되는것을 줄수만큼 제한
+
+    MD2Colors / MD3Color
+      - 색상을 자세히 표현하기 위해 사용 (기존 Colors가 MD2Colors되고 MD3Colors가 추가됨)
+        * react-native-vector-iocons와 react-native-paper 터미널로 2개를 설치하고 써야함.
+        * MD3Color는 에러색상 ?같은 알림 류 색상 모음인덧
+          ex) const styles = StyleSheet.create({
+                    SafeAreaView: { backgroundColor: MD2Colors.blue500 },
+                                    text: { fontSize: 20, color: MD2Colors.blue200}
+    width, height
+      - 색상 표현 범위 지정가능
+        * 고정수치 입력, 퍼센테이지 입력, flex속성을 이용해 부모의 일부만 사용 등 가능
+          ex) SafeAreaView: { backgroundColor: MD2Colors.blue500, width: 300, height: 300 }
+                                                                  width: '70%'
+                                                                  flex: 1
+    flex와 height의 차이
+      - flex는 남는 부분의 100%를 의미하고 height는 화면크기의 100%를 의미함.
+        * flex는 부모의 영역을 나눠가짐?
+          ex) a가 flex 0. b가 flex 1, c가 flex2일때,
+              a는 자기가 사용하는 영역만 가지고,
+              b는 3분의1 (b / a+b+c) 영역을 가짐
+              c는 3분의2 (c / a+b+c) 영역을 가짐
+
+    flexDirection
+      - 부모 컴포넌트 크기가 고정일 때 자식의 컴포넌트를 자신의 영역에 배치할떄 쓰는 기법.
+        * row는 수평, column은 수직
+          ex) flexDirection: 'row'
+              text1 text2 text3                                         // 가로로 되면 row 
+              text2                                                     // 세로로 되면 column
+              text3
+
+    alignItems
+      - 부모의 공간에 여분이 있을때 자식들을 정렬 ?
+        * flex-start, center, flex-end, stretch, baseline               // stretch는 부모에 여유가 있을시
+        * 왼쪽      ,  중앙  , 오른쪽  , 남는공간, ?                         자식의 크기를 조절
+        * flexDirection에 영향을 받음. row면 수평 간격 column은 수직          
+
+    justifyContent
+      - 부모의 공간에 여분이 있을때 자식들을 공간분배 ?
+        * flex-start, center, flex-end, space-around, space-between, space-evenly // space는 자식간에 일정간격 확보
+        * 왼쪽      ,  중앙  , 오른쪽  ,  양옆 패딩   , 양옆 패딩X    , 양 옆패딩과 자식들의 간격 동일
+        * flexDirection에 영향을 받음. row면 수평 간격 column은 수직
+
+    flexWrap
+      - 자식들이 화면을 벗어나면 자동으로 줄바꿈                          // ex) wrap         ==  a b c
+        * nowrap , wrap     , wrap-reverse                                                    d e f
+        * 줄바꿈X, 자동줄바꿈, 줄바꾼 자식들이 위에 줄로감                // ex) wrap-reverse ==  d e f
+                                                                                              a b c
+
+    Overflow
+      - 컴포넌트 크기보다 클때 컬링할지 말지 결정.
+        * visible, hidden, scroll
+        * no컬링 , 컬링   , 스크롤은 혼자서 활성 X(스크롤은 FlatList에서만 가능해서)
+
+    margin
+     - 부모와 자식, 이웃 형제 요소간의 간격을 조정함 (고정수치 입력, 퍼센테이지 입력)
+       * marginLeft, marginTop, marginRight, marginBottom, margin으로 기준을 정함 ?
+          ex) SafeAreaView: { backgroundColor: MD2Colors.blue500, flex: 1, margin: '10%'}
+               가로, 세로가 10%줄음 ?
+
+    padding
+      - 부모와 자식, 이웃 형제 요소간의 공간을 확보 ?
+        * paddingLeft, paddingTop, paddingRight, paddingBottom, padding
+        * paddingLeft == paddingRight 일떄 paddingVertical로 설정
+        * 수평이 동일할땐 paddingHorizontal
+
+    border
+      - 경계 표시
+        * borderWidth == borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth로 넓이 설정
+        * borderColor == borderLeftColor, borderRightColor, borderTopColor, borderBottomColor로 색상 설정
+        * borderRadius== borderLeftTopRadius, borderTopRightRadius, 
+                         borderBottomLeftRadius, borderBottomRightRadius 로 모서리 둥근 정도 설정가능
+        * borderStyle == 'solid', 'dotted', 'dashed'   실선 점선
+
+    Image
+      - Image는 ImageBackground와 달리  자식을 가질수 없음.
+      - 앱의 자원이 아니라 다른 원격지 서버에서 파일을 렌더링할 땐 source에 {uri:이미지 파일 웹주소}형태의 객체를씀
+
+    ImageBackground 
+      - 이미지를 배경으로 사용
+        ex) <ImageBackground style ={{flex:1}} source={require('./src/asset/images/test.png')}/>
+
+    Font
+      - 폰트를 쓰려면 react-native.config.js 파일을 생성하고 모듈 설정을해야함.
+        ex) module.export = {
+              project:{                                                     // 필수로 들어가야함.
+                ios:{},
+                android{},
+              },
+              assets:['./src/assets/fonts'],                                // 폰트가 있는 폴더 
+            }   
+      - 터미널에서 npx react-native link를 터미널을 멈추고 작동시켜야 폰트가 적용됨.(0.6부터는 안해도됨)
+      - 0.6버전 이상부터는 npx react-navive-asset 하면됨.
+
+    fontFamily (fontFamily: '파일확장자 없는 폰트파일 이름')
+      - 폰트 스타일 속성.
+        ex) fontFamily: 'defaultFont'                                       // defaultFont.ttf
+
+      - fontWeight: 'normal' 또는 'bold' 또는 '100'                          // 기본, 굵게, 고정 수치
+                                                                               * bold시 기본 글자가 될수도.
+      - textAlign: 'left' 또는 'center' 또는 'right'                         // 왼쪽, 가운데, 오른쪽 정렬\
+    
+    ICON
+      - <Icon name ='아이콘이름' size{아이콘 크기} color='아이콘색상' onPress={콜백함수}/>
+
+    position 스타일과 left, right, top, BottomBar
+      - 렌더링 되는 위치를 바꾸고 싶을 때 사용.
+        * postion: 'absloute'로 설정해야 적용됨.
+        * left 10을 주면 왼쪽에 10픽섹을 띄우고 렌더링.
+          ex) <View style= {[{
+                postion:'absloute',                                           // 왼쪽과 아래에 10픽셀씩 떨어진곳에
+                left: 10,                                                        렌더링
+                bottom: 10,
+              }]}
+
+    ScrollView의 contentContainerStyle
+      - ScrollView는 다른 컴포넌트와 달리 contentContainerStyle를 설정가능.
+      - 스크롤 대상 콘텐츠에 적용되는 속성. (flex:1이 없어야 작동)
+
+    FlatList
+      - ScrollView보다 reactNative에 최적화된 스크롤뷰(렌더링 속도가 훨씬 빠름)
+        * ScrollView 전부 렌더링, FlatList는 현재 보이는 영역만 렌더링하기 때문.
+
+      - FlatList는 data, renderItem, keyExtractor로 구성됨.
+        * data는 만들고자 하는 리스트의 soucre를 담는 프로퍼티
+        * renderItem은 data로 받은 소스들 그 각각의 item들을 render시켜주는 콜백함수
+        * keyExtractor는 각각의 item에 고유의 키를 주는 것
+        * ItemSeparatatorComponnent 자식요소를 구분할 것을 넣음 ?
+          ex) const data = [                                          // data 선언
+                {
+                  id: '1',
+                  title: 'First Item',
+                },
+                {
+                  id: '2',
+                  title: 'Second Item',
+                },
+                {
+                  id: '3',
+                  title: 'Third Item',
+                },
+              ];
+              type ItemType = { title: string }                                 // 타입스크립트 문법을 쓰려고 
+              const Item = ({ title }: ItemType) => {                              타입 선언
+                return (
+                  <View>
+                    <Text>{title}</Text>
+                  </View>
+                )
+              }
+              data={data} 
+              renderItem={({ item }) => <Item title={item.title} />}          // 위에 선언한 Item의 title에 대입함
+              keyExtractor={item => item.id}
+              ItemSeparatorComponent={() => <View style={({ borderWidth: 1 })} /> // 자식의 사이에 경계선 뷰 추가
+
+    FAB 효과
+      - 항상 화면 위에 떠있는고 상호작용 가능한것?
+        * view들의 자식으로 있으면 불가능하지만, view는 최상위 컴포넌트기에  최상위 컴포넌트처럼 작동하기위해선
+          Fragment가 필요함.
+    
+    Fragment
+      - 실제 존재하진않지만 XML문법이 요구하는 부모 컴포넌트로 동작하도록 만드는 컴포넌트
+        * <></>로 단축구문이 가능
+        ex) <Fragment>
+              <SafeAreaView />                                                // 부모 컴포넌트로 인식함
+              <Safe />                                                        // 부모 컴포넌트로 인식함
+            </Fragment>
+
+            <>                                                                // Fragment 단축구문
+              <SafeAreaView />
+              <Safe />        
+            </>
+
+    SomeComponent
+      - children을 흉내내어 사용가능함?
+        ex) type SomeComponentProps ={ children?:ReactNode}
+            exprot const SomeComponent: FC<SomeComponentProps> = ({children})=>{
+              return <View>{children}</View>
+            }
+
+    ComponentProps 타입
+      - 컴포넌트를 제너릭처림 사용   * 제너릭은 템플릿과 비슷 ?
+        속성 타입 = ComponentProps<typedof 컴포넌트이름>                        // react에서 import 해야함
+        ex) type Props = ComponentProps<typedof dataType>                     // dataType의 타입을 알아내고
+                                                                                 알아낸 타입을 Props라고 정의
+
+    Jsx{..props }구문
+      - 재사용할 컴포넌트에 사용?
+        ex) export type RecycleContent = {children?: ReactNode}
+            export const MyContent: FC<RecycleContent> = ({ children, ...prop }) => { // 나머지 파라미터로 prop
+            return (
+                <View {...prop}>                                              // 나머지 파라미터라 있다면,
+                    <Icon name='commet' size={50} onPress={() => { }} />         onPress같은 기능을 여러개 
+                    <Text>{children}</Text>                                      넣을 수 있음.
+                </View>
+            )}
+
+    FC 타입과 children 속성
+      - 함수 컴포넌트는 ReactNode타입인 children을 포함함
+
+    StyleProp 타입
+      - 스타일 제네릭
+        * ViewStyle, TextStyle, ImageStyle          // 스타일 타입
+          ex) viewStyle?: StyleProp<ViewStyle>
+
+
+리액트 훅
+    - 데이터 캐시를 잘 사용할 수 있도록 하는 API, 함수 컴퍼넌트에서만 사용가능하다.
+    - 기본 훅
+      * useState	상태 유지 및 변경
+        - '값'이 변경이 될 때마다 렌더링을 한다. '값'을 변경하기 위해서는 '값-변경-함수'를 통해서 상태를 변경해야 한다
+        - const[값, 값-변경-함수] = useState(초기값)​
+          ex) const [count, setCount] = useState(0)                     // count 값을 setCount로 바꿀것 초기값 0
+              <Text>{count}</Text>                                      // count 값 출력
+              <Button title={'click'} onPress={()=>setCount(count+1)}/> // 
+              
+      * useEffect	이벤트 처리
+        -처음 마운트될 때 실행, 재렌더링될 때마다 실행(의존성목록생략시), '의존성-목록'이 충족될 때마다 
+        '콜백함수'를 실행, return문으로 컴포넌트를 없앨 때 한 번만 실행되는 기능도 있다.
+        - useEffect(() => {콜백함수}, [의존성-목록])
+          ex) const [count, setCount] = useState<number>(0)
+              const comment = ''
+              useEffect(() => {
+                console.log("useEffect의 콜백함수 실행")
+              },[count])                                                // count의 값이 바뀔떄마다 실행
+
+
+
+      * useContext	정보 공유
+    - 추가 훅	
+      * useReducer	상태 유지 및 변경 (Redux)
+      * useCallback	콜백 함수 캐시
+      * useMemo	데이터, 값 캐시
+      * useRef	.
+      * useImperativeHandle	.
+      * useLayoutEffect	.
+      * useDebugValue	.
 
 
 
@@ -308,3 +486,6 @@
               assets:['./src/assets/fonts'],
               }
      - 프로젝트 폴더-android-app-main-assets-fonts 폴더에 폰트 파일넣으셈
+
+     npm i moment moment=with-locales-es6
+      - moment.js 패키지를 설치 (날짜를 보기 좋게 출력할 수 있음.)

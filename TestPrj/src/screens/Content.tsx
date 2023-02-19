@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, FlatList, } from 'react-native';
 import { MD2Colors } from 'react-native-paper';
+import Icon from 'react-native-paper/lib/typescript/components/Icon';
 import * as M from '../data'
 
 
@@ -9,25 +10,45 @@ import * as M from '../data'
 const title = 'Content'
 const styles = StyleSheet.create({
     view: { padding: 5, backgroundColor: MD2Colors.blue700, flex: 1 },
+    contentView: { flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center' },
     text: { fontSize: 20, color: MD2Colors.white },
 })
 
+const data = [
+    {
+        id: '1',
+        title: 'First Item',
+    },
+    {
+        id: '2',
+        title: 'Second Item',
+    },
+    {
+        id: '3',
+        title: 'Third Item',
+    },
+];
+
+type ItemType = { title: string }
+const Item = ({ title }: ItemType) => {
+    return (
+        <View>
+            <Text>{title}</Text>
+        </View>
+    )
+}
 
 // 함수
 export default function Content() {
     return (
-        <View style={styles.view}>
-            <Text style={styles.text}>{title}</Text>
-            <View style={[{ flex: 0, backgroundColor: MD2Colors.red500 }]}>
-                <Text>flex 0</Text>
-            </View>
-            <View style={[{ flex: 1, backgroundColor: MD2Colors.green500 }]}>
-                <Text>flex 1</Text>
-            </View>
-            <View style={[{ flex: 2, backgroundColor: MD2Colors.purple500 }]}>
-                <Text>flex 2</Text>
-            </View>
-        </View>
+        <FlatList
+            data={data}
+            renderItem={({ item }) => <Item title={item.title} />}
+            keyExtractor={item => item.id}
+            ItemSeparatorComponent={
+                () => <View style={({ borderWidth: 1 })} />
+            }>
+        </FlatList>
     )
 }
 
