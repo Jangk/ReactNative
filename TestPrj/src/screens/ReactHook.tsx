@@ -1,6 +1,6 @@
 import React from 'react'
-import { useState, FC } from 'react'
-import { SafeAreaView, Text, Button } from 'react-native'
+import { FC, useState, useEffect, useMemo, useReducer } from 'react'
+import { SafeAreaView, Text, Button, StyleSheet } from 'react-native'
 
 
 
@@ -16,19 +16,33 @@ export enum eReactHook {
     useDebugValue
 }
 
-
 export type myReactData = {
     reactHookVal: eReactHook
 }
 
+const myTime = new Date
+
+const styles = StyleSheet.create({
+    font: { fontFamily: 'DancingScript-Bold', fontWeight: '400', fontSize: 50 }
+})
+
+
 export const MyReactHookFC: FC<myReactData> = (value) => {
-    const [count, setCount] = useState(0);
     return (
         <>
-            <Text>{count}</Text>
-            <Button title={'click'} onPress={() => setCount(count + 1)} />
+            <Button title={'Increase'} onPress={() => { }} />
+            <Button title={'Decrease'} onPress={() => { }} />
+            <Text style={styles.font}>{myTime.toLocaleTimeString()}</Text>
         </>
     )
 }
 
 export default MyReactHookFC
+
+/*
+
+
+
+
+
+*/

@@ -10,6 +10,7 @@ import Content from './src/screens/Content'
 import BottomBar from './src/screens/BottomBar'
 import RecycleContent from './src/screens/RecycleContent'
 import MyReactHook from './src/screens/ReactHook';
+import CustomReactHook, { useClock } from './src/screens/CustomReactHook'
 import * as M from './src/data'
 
 
@@ -34,12 +35,12 @@ const styles = StyleSheet.create({
 // 함수
 export default function App() {
   console.log('App Called')
+  const time = useClock()
 
-  const [count, setCount] = useState(0)
   return (
     <>
       <SafeAreaView style={styles.SafeAreaView}>
-        <MyReactHook />
+        <Text>{time.toLocaleTimeString()}</Text>
       </SafeAreaView>
     </>
   )
