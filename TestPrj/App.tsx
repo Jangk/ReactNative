@@ -12,7 +12,8 @@ import RecycleContent from './src/screens/RecycleContent'
 import MyReactHook from './src/screens/ReactHook';
 import CustomReactHook, { useClock } from './src/screens/CustomReactHook'
 import * as M from './src/data'
-
+import { create } from 'react-test-renderer';
+import testContext from './src/Context/testContext'
 
 
 // 변수
@@ -35,27 +36,32 @@ const styles = StyleSheet.create({
 // 함수
 export default function App() {
   console.log('App Called')
-  const time = useClock()
-
+  //const time = useClock()
   return (
     <>
-      <SafeAreaView style={styles.SafeAreaView}>
-        <Text>{time.toLocaleTimeString()}</Text>
-      </SafeAreaView>
+      <TopBar />
+      <Content />
+      <testContext.Provider value='aa'>
+        <RecycleContent iconName='commet' iconSize={50} />
+        <SafeAreaView style={styles.SafeAreaView}>
+          <MyReactHook />
+        </SafeAreaView>
+      </testContext.Provider>
+      <BottomBar />
     </>
   )
 }
 
+{/* <Text>{time.toLocaleTimeString()}</Text> */ }
 
 // 주석
 /*
+타이머
 <TopBar />
 <Content />
 <RecycleContent iconName='commet' iconSize={30} viewStyle={styles.MyView}></RecycleContent>
 <Text>{count}</Text>
 <Button title={'click'} onPress={() => setCount(count + 1)} />
 <BottomBar />
-
-
 
 */

@@ -407,75 +407,122 @@
 
 리액트 훅   ( 하위에 들어가면안됨. if, for안에 들어가면 안됨 )
     - 데이터 캐시를 잘 사용할 수 있도록 하는 API, 함수 컴퍼넌트에서만 사용가능하다.
-    - 기본 훅
-      * useState	상태 유지 및 변경
-        - '값'이 변경이 될 때마다 렌더링을 한다. '값'을 변경하기 위해서는 '값-변경-함수'를 통해서 상태를 변경해야 한다
-        - const[값, 값-변경-함수] = useState(초기값)​
-          ex) const [count, setCount] = useState(0)                     // count 값을 setCount로 바꿀것 초기값 0
-              <Text>{count}</Text>                                      // count 값 출력
-              <Button title={'click'} onPress={()=>setCount(count+1)}/> 
-              
-      * useEffect	이벤트 처리
-        -처음 마운트될 때 실행, 재렌더링될 때마다 실행(의존성목록생략시), '의존성-목록'이 충족될 때마다 
-        '콜백함수'를 실행, return문으로 컴포넌트를 없앨 때 한 번만 실행되는 기능도 있다.
-        - useEffect(() => {콜백함수}, [의존성-목록])
-          ex) const [count, setCount] = useState<number>(0)
-              useEffect({() => {
-                console.log("useEffect의 콜백함수 실행"}}
-              },[count])                                                // count의 값이 바뀔떄마다 실행
+      
+      
+    * useState	상태 유지 및 변경
+      - '값'이 변경이 될 때마다 렌더링을 한다. '값'을 변경하기 위해서는 '값-변경-함수'를 통해서 상태를 변경해야 한다
+      - const[값, 값-변경-함수] = useState(초기값)​
+        ex) const [count, setCount] = useState(0)                     // count 값을 setCount로 바꿀것 초기값 0
+            <Text>{count}</Text>                                      // count 값 출력
+            <Button title={'click'} onPress={()=>setCount(()=>{       // 값변경 함수에서 값을 대입하는게 아니면
+              return count+1}))}/>                                       값을 변경하는 함수식을 넣을것
+                                                                         useCallback으로 최적화 하기위해
 
-      * useContext	정보 공유
-        - 함수형 컴포넌트에서 Context 를 보다 더 쉽게 사용 할 수 있음
-          ex) const ThemeContext = createContext('black')               //  콘텐츠 생성 
-              const ContextSample = () => {
-                const theme = useContext(ThemeContext)                  // theme에 생성한 콘텐츠 넣음
-                const style = { background: theme}
-                }
-                return <div style={style}
+
+    * useEffect	이벤트 처리
+      -처음 마운트될 때 실행, 재렌더링될 때마다 실행(의존성목록생략시), '의존성-목록'이 충족될 때마다 
+      '콜백함수'를 실행, return문으로 컴포넌트를 없앨 때 한 번만 실행되는 기능도 있다.
+        * 첫 마운트 때만 실행하려면 의존성 목록에 빈배열만 넣음  ==   []
+       ex) useEffect(() => {콜백함수 return ()={} }, [의존성-목록]      // 컴포넌트 삭제시 return 이 실행됨.
+      - useEffect(() => {콜백함수}, [의존성-목록])
+        ex) const [count, setCount] = useState<number>(0)
+            useEffect({() => {
+              console.log("useEffect의 콜백함수 실행"}}
+            },[count])                                                // count의 값이 바뀔떄마다 실행
+
+
+    * useRef  ref 오브젝트 반환
+      - useState처럼 값을 관리하지만, 저장된 값을 변경해도 렌더링 되지않음. 마운트 해제까지 값을 유지
+      - ref를 통해 DOM 요소 접근이 가능하다.
+      - const ref = useRef(value)
+        * ref 오브젝는 {current : value} 형식이며, 값을 바꿀 수 있음
+          ex) ref = useRef(value2)                                    // 다시 대입가능?
+              ref.current = value2                                    // 초기화된 ref.current로 직접 접근ㄱㄴ
+
+    * forwardRef
+      - 상위 컴포넌트에서 받은 ref를 하위 컴포넌트로 전달
+        ex) const ref = React.createRef();
+            const FancyButton = React.forwardRef((props, ref) => (
+              <button ref={ref} className="FancyButton">
+                {props.children}
+              </button>
+            ))
+
+    * useImperativeHandle	자식 참조?
+      - 하위 컴포넌트 상태/메소드를 상위 컴포넌트에서 참조하거나 변경할때 사용
+      - useImperativeHandle(ref, 콜백함수, count, setcount, name, setName)
+
+
+    * Context (import {createContext} from 'react')
+      - 여러 컴포넌트에서 전역적으로 사용하는 데이터를 쉽게 관리할 수 있게 해줌.
+      - const 콘텍스트이름 = createContext(초기값)
+
+    * useContext	정보 공유
+      - 함수형 컴포넌트에서 Context 를 보다 더 쉽게 사용 할 수 있음
+        ex) const [isDark. setIsDark] = userState(false)              // ThemeContext는 createContext만 있음
+            <ThemeContext.provider value ={{isDark, setIsDark}}>      // ThemeContext에 value 값을 넣음
+              <page/>
+            <ThemeContext/>                                           // Provider 영역안에선 value안에 넣은
+                                                                         값을 전역적으로 앎
+      ---------------------------------------------page-----------------------------------------
+            const {isDark, setIsDark} = useContext(ThemeContext)      // page에서 provider에 값을 얻어옴 ?
+            .... 내용
+
+
+    * reducer 
+      - 요구 받은 행동(Action)을 통해 상태를 변경                       // state를 업데이트 하는 역할
+      - Redcuer(state, Action)
+
+    * dispatch
+      - reducer에게 실행할 행동(Action)을 요구                         // state 업데이트를 위한 요구
+      - Dispatch(Action)
+
+    * Action                                                         // 요구의 내용
+      - 실행할 행동 ?
+
+    * useReducer	상태 유지 및 변경 (Redux)
+      - 복잡한 여러개의 하위 스테이트를 관리할때 사용
+      - const [상태 객체, dispatch 함수] = useReducer(reducer 함수, 초기값)​
+        ex) const reducer = (state, action) =>{
+              switch(action.type){                                   // 밑에서 dispatch로 action에 대입됨.
+                case: 'deposit'
+                  return 'deposit 상태'                              // 반환값은 state에 대입됨.
+                default:
+                  return '아무것도'
               }
-
-      * useReducer	상태 유지 및 변경 (Redux)
-        - 컴포넌트의 상태 업데이트 로직을 컴포넌트에서 분리해서 컴포넌트 밖 또는 다른 파일에서 업데이트 로직을 수정ㄱㄴ
-          * reducer 함수 : 현재 상태와 액션 객체를 파라미터로 받아와서 새로운 상태를 반환해주는 함수
-            ex) function reducer(state, action) {
-                  // 새로운 상태를 만드는 로직
-                  // 다음 상태를 만드는 설정하는 내용. 
-                  return nextState;
-                }
-
-        - const [상태 객체, dispatch 함수] = useReducer(reducer 함수, 초기값)​
-          ex) 다시 찾아볼걸
-          ㅇㅇ
-          ㅇㅇ
-          ㅇㅇ
-
-      * useMemo	데이터, 값 캐시
-        - 함수 컴포넌트 안에 생성된 데이터는 렌더링 될때마다 재생성됨. 데이터를 useMemo훅으로 캐시에 저장해서 
-          한 번만 생성함 (메모이제이션 가능) ==  깂를 메모리에 저장해 두었다가 꺼내 씀
-        - const 캐시_데이터 = useMemo(콜백함수, [의존성목록])
-          ex) const factorial = (n: number) : number => {
-                if(n == 0) return 1;
-                else if(n == 1) return 1;
-                else return factorial(n-1) * n
-              }
-              const memoizedFactorial = useMemo(()=> factorial,[])
-
-      * useCallback	콜백 함수 캐시
-        - 함수 컴포넌트 안에 생성된 데이터는 렌더링 될때마다 재생성됨. 데이터를 useCallback훅으로 캐시에 저장해서 
-          한 번만 생성함 (메모이제이션 가능) ==  함수를 메모리에 저장해 두었다가 꺼내 씀
-        - const 캐시_함수 = useCallback(사용할_콜백함수, [의존성목록])
-          ex) const buttonClick = useCallback(
-                (name: string) => () => Alert.alert(`${name} button clicked`), [])
-
-              <Button title='안녕' onPress={buttonClick('안녕')}/>           // 함수 사용
-              <Button title='내이름은' onPress={buttonClick('내이름은')}/>    // 재사용1
-              <Button title='2HS' onPress={buttonClick('2HS')}/>            // 재사용 2
+            }
+            const [money, dispatch] = useReducer(reducer, 0)
+            dispatch({ type : 'deposit'})                            // dispatch(액션)  액션에 대입됨.
 
 
-      * useRef	.
-      * useImperativeHandle	.
-      * useLayoutEffect	.
-      * useDebugValue	.
+    * useMemo	데이터, 값 캐시
+      - 함수 컴포넌트 안에 생성된 데이터는 렌더링 될때마다 재생성됨. 데이터를 useMemo훅으로 캐시에 저장해서 
+        의존성 목록이 바꼇을때만 작동 (메모이제이션 가능) ==  깂를 메모리에 저장해 두었다가 꺼내 씀
+        *** useMemo는 콜백함수를 실행 시킨 값을 저장?
+      - const 캐시_데이터 = useMemo(콜백함수, [의존성목록])
+        ex) const factorial = (n: number) : number => {
+              if(n == 0) return 1;
+              else if(n == 1) return 1;
+              else return factorial(n-1) * n
+            }
+            const memoizedFactorial = useMemo(()=> factorial,[])
+
+
+    * useCallback	콜백 함수 캐시
+      - 함수 컴포넌트 안에 생성된 데이터는 렌더링 될때마다 재생성됨. 데이터를 useCallback훅으로 캐시에 저장해서 
+        의존성 목록이 바꼇을때만 작동(메모이제이션 가능) ==  함수를 메모리에 저장해 두었다가 꺼내 씀
+        *** useCallBack은 콜백함수 자체를 저장?
+      - const 캐시_함수 = useCallback(사용할_콜백함수, [의존성목록])
+        ex) const buttonClick = useCallback(
+              (name: string) => () => Alert.alert(`${name} button clicked`), [])
+
+            <Button title='안녕' onPress={buttonClick('안녕')}/>           // 함수 사용
+            <Button title='내이름은' onPress={buttonClick('내이름은')}/>    // 재사용1
+            <Button title='2HS' onPress={buttonClick('2HS')}/>             // 재사용 2
+
+
+    * useLayoutEffect	.
+    * useDebugValue	.
 
 커스텀 훅
     - userState와 useCallback을 이용하여 사용자가 새로운 훅을 만드는것.
