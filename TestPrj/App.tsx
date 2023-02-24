@@ -38,19 +38,35 @@ const styles = StyleSheet.create({
 export default function App() {
   console.log('App Called')
 
-  let url = 'https://reactnative.dev/movies.json';
-  let fetchOption = {
-    method: "POST",
-    headers: {
-      'Content-type': 'application/json'
-    },
-  }
+  // fetch로 서버데이터 받아오기
+  let url = 'https://reactnative.dev/movies.json'
   const [movie, SetMovie] = useState([])
-  fetch(url)
-    .then(res => res.json())              //json으로 받을 것을 명시
-    .then(res => {                        //실제 데이터를 상태변수에 업데이트
-      SetMovie(res)
-    });
+  //let fetchOption = {
+  //  method: "POST",
+  //  headers: {
+  //    'Content-type': 'application/json'
+  //  },
+  //}
+  //fetch(url)
+  //  .then(res => res.json())              //json으로 받을 것을 명시
+  //  .then(res => {                        //실제 데이터를 상태변수에 업데이트
+  //    SetMovie(res)
+  //  })
+
+
+  // XMLHttoRequest로 서버 데이터 받아오기
+  const xhr = new XMLHttpRequest();
+  const method = "GET";
+  xhr.open(method, url);
+  xhr.onreadystatechange = function () {
+    if (this.status == 200 && this.readyState === XMLHttpRequest.DONE) {
+      console.log('성공')
+      console.log(xhr.response)
+      SetMovie(xhr.response)
+    }
+  }
+  xhr.send();
+
 
   return (
     <>
