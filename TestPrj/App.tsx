@@ -64,4 +64,9 @@ export default function App() {
 <Button title={'click'} onPress={() => setCount(count + 1)} />
 <BottomBar />
 
+
+
+// 앱구성 ?
+
+
 */
