@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useMemo } from 'react'
 import {
   Text, View, SafeAreaView, Alert, TextInput, StyleSheet, Platform, Dimensions,
   Image, ImageBackground, Button
@@ -14,6 +14,7 @@ import CustomReactHook, { useClock } from './src/screens/CustomReactHook'
 import * as M from './src/data'
 import { create } from 'react-test-renderer';
 import testContext from './src/Context/testContext'
+import { ExamModel } from './src/examModel';
 
 
 // 변수
@@ -36,18 +37,26 @@ const styles = StyleSheet.create({
 // 함수
 export default function App() {
   console.log('App Called')
-  //const time = useClock()
+
+  let url = 'https://reactnative.dev/movies.json';
+  let fetchOption = {
+    method: "POST",
+    headers: {
+      'Content-type': 'application/json'
+    },
+  }
+  const [movie, SetMovie] = useState([])
+  fetch(url)
+    .then(res => res.json())              //json으로 받을 것을 명시
+    .then(res => {                        //실제 데이터를 상태변수에 업데이트
+      SetMovie(res)
+    });
+
   return (
     <>
-      <TopBar />
-      <Content />
-      <testContext.Provider value='aa'>
-        <RecycleContent iconName='commet' iconSize={50} />
-        <SafeAreaView style={styles.SafeAreaView}>
-          <MyReactHook />
-        </SafeAreaView>
-      </testContext.Provider>
-      <BottomBar />
+      <SafeAreaView>
+        <Text>{JSON.stringify(movie)}</Text>
+      </SafeAreaView>
     </>
   )
 }
@@ -57,6 +66,10 @@ export default function App() {
 // 주석
 /*
 타이머
+//const time = useClock()
+
+
+
 <TopBar />
 <Content />
 <RecycleContent iconName='commet' iconSize={30} viewStyle={styles.MyView}></RecycleContent>
@@ -66,7 +79,22 @@ export default function App() {
 
 
 
-// 앱구성 ?
+// 앱구성
+<TopBar />
+<Content />
+<testContext.Provider value='aa'>
+  <RecycleContent iconName='commet' iconSize={50} />
+  <SafeAreaView style={styles.SafeAreaView}>
+    <MyReactHook />
+  </SafeAreaView>
+</testContext.Provider>
+<BottomBar />
+
+
+
+// 네트워크
+
+
 
 
 */
