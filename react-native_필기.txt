@@ -587,6 +587,62 @@
           }
 
 
+애니메이션
+    - Animated, Easing, PanResponder, LayoutAnimation
+    - 애니메이션이 작동하는 방식은 2개 
+      * useNativeDriver = boolean  false면 자바스크립트 엔진 방식으로 작동, true면 네이티브 모듈 방식으로 작동.
+      * 자바스크립트 엔진 애니메이션  - 자바스크립트 엔진이 기본으로 제공하는 requestAnimationFram 함수를 사용
+      * 네이티브 모듈 애니메이션      - 자바나 Object-C로 구현한 애니메이션.
+
+
+      * Animated 기능.
+        - 애니메이션 보간 값 저장
+          * Animated.Value        : 애니메이션 초기값 설정
+          * Animated.ValueXY      : x,y값 설정
+        - 애니메이션 제어
+          * Animated.timing()     : 시간이 지남에 따라 값을 에니메이션
+            - useNativeDriver       == 작동방식 선택  (true, false)
+            - toValue               == 목표로 하는 값 (number)            // 초기값에서 목표 값까지 .
+            - duration              == 지속시간       (number:ms)
+            - easing                == 가속 효과      (easing.bounce)
+            - delay                 == 실행전 딜레이   (number:ms)
+          * Animated.spring()     : 간단한 스프링 물리 모델을 제공 ( 띠요요옹하는 효과 ?)
+            - frinction             == 얼마나 빨리 원상태로 복구 될지? (마찰)
+            - tension               == 스프링 강도                    (장력)
+          * Animated.decay()      : 초기 속도(initial velocity)로 시작하여 점차 감속함
+            - velocity            : 가속 값
+          * Animated.delay()
+          * Animated.loop()
+        - 여러 애니메이션 통합 제어
+          * Animated.parallel()   : 애니메이션 배열을 한번에 실행
+          * Animated.sequence()   : 애니메이션 배열을 순서대로 실행
+          * Animated.stagger()    : 애니메이션을 딜레이만큼 기다렸다 순서대로 실행
+            - 사용법은 parallel과 sequence와 동일하지만 앞에 함수인자에 delay(ms)만 추가됨
+        - 애니메이션 연산
+          * Animated.add()
+          * Animated.subtract()
+          * Animated.multiply()
+          * Animated.devide()
+          * Animated.modulo()
+          * Animated.diffClamp
+        - 애니메이션 이벤트
+          * Animated.event()
+        - 애니메이션 대상 컴포넌트
+          * Animated.View         : 내부의 Opacity값이 anmated.Value 형식이라 그냥 View를 쓸수 없어서 사용 ?
+          * Animated.Image
+          * Animated.Text
+          * Animated.ScrollView
+          * Animated.FlatList
+          * Animated.SectionList
+    
+    
+    
+
+
+
+
+
+
 
 
 
